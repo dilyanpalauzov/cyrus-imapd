@@ -134,7 +134,7 @@ int do_fileinto(sieve_interp_t *i, void *sc,
                 action_list_t *a, const char *mbox, const char *specialuse,
                 int cancel_keep, int do_create, const char *mailboxid,
                 strarray_t *imapflags, struct buf *headers);
-int do_redirect(action_list_t *a, const char *addr, const char *deliverby,
+int do_redirect(action_list_t *a, const char *addr, char *deliverby,
                 const char *dsn_notify, const char *dsn_ret,
                 int is_ext_list, int cancel_keep, struct buf *headers);
 int do_keep(sieve_interp_t *i, void *sc,
