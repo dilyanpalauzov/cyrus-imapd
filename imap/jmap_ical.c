@@ -755,7 +755,7 @@ static struct icaltimetype dtstart_from_ical(icalcomponent *comp)
 
 static struct icaltimetype dtend_from_ical(icalcomponent *comp)
 {
-    struct icaltimetype dtend = icaltime_null_time();
+    struct icaltimetype dtend;
     icalproperty *end_prop = icalcomponent_get_first_property(comp, ICAL_DTEND_PROPERTY);
     icalproperty *dur_prop = icalcomponent_get_first_property(comp, ICAL_DURATION_PROPERTY);
     struct icaltimetype dtstart = dtstart_from_ical(comp);
@@ -2242,7 +2242,7 @@ calendarevent_from_ical(icalcomponent *comp, hash_table *props,
     /* start */
     if (jmap_wantprop(props, "start")) {
         struct jmapical_datetime start = JMAPICAL_DATETIME_INITIALIZER;
-        if ((prop = icalcomponent_get_first_property(comp, ICAL_DTSTART_PROPERTY))) {
+        if (icalcomponent_get_first_property(comp, ICAL_DTSTART_PROPERTY)) {
             icaltimetype dtstart = dtstart_from_ical(comp);
             jmapical_datetime_from_icaltime(dtstart, &start);
         }
