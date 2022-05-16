@@ -904,7 +904,7 @@ static int process_valarms(struct mailbox *mailbox,
                             icaltimezone *floatingtz, time_t runtime,
                             int dryrun)
 {
-    icalcomponent *ical = ical = record_to_ical(mailbox, record, NULL);
+    icalcomponent *ical = record_to_ical(mailbox, record, NULL);
 
     if (!ical) {
         syslog(LOG_ERR, "error parsing ical string mailbox %s uid %u",
