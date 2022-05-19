@@ -296,7 +296,6 @@ __attribute__((nonnull)) const char *buf_cstringnull_ifempty(const struct buf *b
 __attribute__((nonnull, returns_nonnull, warn_unused_result)) char *buf_release(struct buf *buf);
 __attribute__((nonnull, returns_nonnull, warn_unused_result)) char *buf_newcstring(struct buf *buf);
 __attribute__((nonnull, warn_unused_result)) char *buf_releasenull(struct buf *buf);
-void buf_getmap(struct buf *buf, const char **base, size_t *len);
 int buf_getline(struct buf *buf, FILE *fp);
 size_t buf_len(const struct buf *buf);
 const char *buf_base(const struct buf *buf);
