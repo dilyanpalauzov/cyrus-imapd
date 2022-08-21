@@ -57,7 +57,6 @@ EXPORTED void ptrarray_fini(ptrarray_t *pa)
 {
     if (!pa)
         return;
-    memset(pa->data, 0, sizeof(void *) * pa->count);
     free(pa->data);
     pa->data = NULL;
     pa->count = 0;
@@ -66,10 +65,10 @@ EXPORTED void ptrarray_fini(ptrarray_t *pa)
 
 EXPORTED void ptrarray_free(ptrarray_t *pa)
 {
-    if (!pa)
-        return;
-    ptrarray_fini(pa);
-    free(pa);
+    if (pa) {
+        free(pa->data);
+        free(pa);
+    }
 }
 
 #define QUANTUM     16
