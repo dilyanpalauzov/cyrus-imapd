@@ -68,10 +68,10 @@ EXPORTED void arrayu64_fini(arrayu64_t *au)
 
 EXPORTED void arrayu64_free(arrayu64_t *au)
 {
-    if (!au)
-        return;
-    arrayu64_fini(au);
-    free(au);
+    if (au) {
+        free(au->data);
+        free(au);
+    }
 }
 
 #define QUANTUM     16
