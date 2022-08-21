@@ -69,10 +69,12 @@ EXPORTED void strarray_fini(strarray_t *sa)
 
 EXPORTED void strarray_free(strarray_t *sa)
 {
-    if (!sa)
-        return;
-    strarray_fini(sa);
-    free(sa);
+    if (sa) {
+        for (int i = 0 ; i < sa->count ; i++)
+            free(sa->data[i]);
+        free(sa->data);
+        free(sa);
+    }
 }
 
 #define QUANTUM     16
