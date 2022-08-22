@@ -55,12 +55,10 @@ EXPORTED strarray_t *strarray_new(void)
 
 EXPORTED void strarray_fini(strarray_t *sa)
 {
-    int i;
-
     if (!sa)
         return;
-    for (i = 0 ; i < sa->count ; i++) {
-        xzfree(sa->data[i]);
+    for (int i = 0 ; i < sa->count ; i++) {
+        free(sa->data[i]);
     }
     xzfree(sa->data);
     sa->count = 0;
