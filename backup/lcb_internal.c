@@ -55,6 +55,7 @@
 #define LIBCYRUS_BACKUP_SOURCE /* this file is part of libcyrus_backup */
 #include "backup/lcb_internal.h"
 
+__attribute__((nonnull(4)))
 HIDDEN int parse_backup_line(struct protstream *in, time_t *ts,
                              struct buf *cmd, struct dlist **kin)
 {
@@ -91,7 +92,7 @@ HIDDEN int parse_backup_line(struct protstream *in, time_t *ts,
         goto fail;
     }
 
-    if (kin) *kin = dl;
+    *kin = dl;
     if (cmd) buf_copy(cmd, &buf);
     if (ts) *ts = (time_t) t;
     buf_free(&buf);
