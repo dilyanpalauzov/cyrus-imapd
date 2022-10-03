@@ -2981,7 +2981,6 @@ index_copy(struct index_state *state,
     struct mailbox *destmailbox = NULL;
     struct index_map *im;
     int is_same_user;
-    ptrarray_t *msgrecs = NULL;
 
     *copyuidp = NULL;
 
@@ -2998,6 +2997,7 @@ index_copy(struct index_state *state,
     r = index_check(state, usinguid, usinguid);
     if (r) return r;
 
+    ptrarray_t *msgrecs = ptrarray_new();
     srcmailbox = state->mailbox;
 
     seq = _parse_sequence(state, sequence, usinguid);
@@ -3042,7 +3042,6 @@ index_copy(struct index_state *state,
     if (r) goto done;
 
     docopyuid = (appendstate.myrights & ACL_READ);
-    msgrecs = ptrarray_new();
 
     for (i = 0; i < copyargs.nummsg; i++) {
         msgrecord_t *mr = msgrecord_from_index_record(srcmailbox, &copyargs.records[i]);
@@ -3103,13 +3102,11 @@ index_copy(struct index_state *state,
 done:
     free(copyargs.records);
     mailbox_close(&destmailbox);
-    if (msgrecs) {
-        for (i = 0; i < msgrecs->count; i++) {
-            msgrecord_t *mr = ptrarray_nth(msgrecs, i);
-            msgrecord_unref(&mr);
-        }
-        ptrarray_free(msgrecs);
+    for (i = 0; i < msgrecs->count; i++) {
+        msgrecord_t *mr = ptrarray_nth(msgrecs, i);
+        msgrecord_unref(&mr);
     }
+    ptrarray_free(msgrecs);
 
     return r;
 }
