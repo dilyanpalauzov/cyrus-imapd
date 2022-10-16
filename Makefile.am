@@ -844,12 +844,10 @@ backup_backupd_LDADD = backup/libcyrus_backup.la $(LD_SIEVE_ADD) $(LD_SERVER_ADD
 backup_ctl_backups_SOURCES = \
     imap/mutex_fake.c \
     imap/sync_support.c \
-    imap/sync_support.h \
     backup/ctl_backups.c
 backup_ctl_backups_LDADD = backup/libcyrus_backup.la $(LD_SIEVE_ADD) $(LD_UTILITY_ADD)
 
 backup_cyr_backup_SOURCES = \
-    imap/json_support.h \
     imap/mutex_fake.c \
     backup/cyr_backup.c
 backup_cyr_backup_LDADD = backup/libcyrus_backup.la $(LD_UTILITY_ADD)
@@ -857,7 +855,6 @@ backup_cyr_backup_LDADD = backup/libcyrus_backup.la $(LD_UTILITY_ADD)
 backup_restore_SOURCES = \
     imap/mutex_fake.c \
     imap/sync_support.c \
-    imap/sync_support.h \
     backup/restore.c
 backup_restore_LDADD = backup/libcyrus_backup.la $(LD_SIEVE_ADD) $(LD_UTILITY_ADD)
 
@@ -954,7 +951,6 @@ imap_imapd_SOURCES = \
 	imap/proxy.c \
 	imap/proxy.h \
 	imap/sync_support.c \
-	imap/sync_support.h \
 	master/service.c
 
 if AUTOCREATE
@@ -1019,7 +1015,6 @@ imap_libcyrus_imap_la_SOURCES = \
 	imap/index.h \
 	imap/jmap_util.c \
 	imap/jmap_util.h \
-	imap/json_support.h \
 	imap/mailbox.c \
 	imap/mailbox.h \
 	imap/mbdump.c \
@@ -1054,7 +1049,6 @@ imap_libcyrus_imap_la_SOURCES = \
 	imap/quota_db.c \
 	imap/rfc822_header.c \
 	imap/rfc822_header.h \
-	imap/mailbox_header_cache.h \
 	imap/saslclient.c \
 	imap/saslclient.h \
 	imap/saslserver.c \
@@ -1182,15 +1176,13 @@ imap_lmtpd_SOURCES = \
 	imap/proxy.c \
 	imap/spool.c \
 	imap/sync_support.c \
-	imap/sync_support.h \
 	master/service.c
 
 nodist_imap_lmtpd_SOURCES = imap/lmtp_err.c
 
 if AUTOCREATE
 imap_lmtpd_SOURCES += \
-	imap/autocreate.c \
-	imap/autocreate.h
+	imap/autocreate.c
 endif # AUTOCREATE
 
 if SIEVE
@@ -1240,11 +1232,8 @@ imap_nntpd_SOURCES = \
 	imap/nntpd.c \
 	imap/proxy.c \
 	imap/smtpclient.c \
-	imap/smtpclient.h \
 	imap/spool.c \
-	imap/spool.h \
 	imap/sync_support.c \
-	imap/sync_support.h \
 	master/service.c
 imap_nntpd_LDADD = $(LD_SIEVE_ADD) $(LD_SERVER_ADD)
 
@@ -1291,13 +1280,11 @@ imap_httpd_SOURCES = \
 	imap/itip_support.h \
 	imap/jcal.c \
 	imap/jcal.h \
-	imap/json_support.h \
 	imap/mutex_fake.c \
 	imap/proxy.c \
 	imap/smtpclient.c \
 	imap/spool.c \
 	imap/sync_support.c \
-        imap/sync_support.h \
 	imap/xcal.c \
 	imap/xcal.h \
 	imap/xml_support.c \
@@ -1330,15 +1317,13 @@ imap_httpd_SOURCES += \
 	imap/jmap_mail_query.c \
 	imap/jmap_mail_query.h \
 	imap/jmap_mail_query_parse.c \
-	imap/jmap_mail_query_parse.h \
 	imap/jmap_mail_submission.c \
 	imap/jmap_mailbox.c \
 	imap/jmap_mdn.c \
 	imap/jmap_notes.c \
 	imap/jmap_push.c \
 	imap/jmap_push.h \
-	imap/jmap_util.c \
-	imap/jmap_util.h
+	imap/jmap_util.c
 
 if SIEVE
 imap_httpd_SOURCES += \
@@ -1369,13 +1354,11 @@ imap_pop3d_SOURCES = \
 	imap/pop3d.c \
 	imap/proxy.c \
 	imap/sync_support.c \
-	imap/sync_support.h \
 	master/service.c
 
 if AUTOCREATE
 imap_pop3d_SOURCES += \
-	imap/autocreate.c \
-	imap/autocreate.h
+	imap/autocreate.c
 endif # AUTOCREATE
 
 imap_pop3d_LDADD = $(LD_SIEVE_ADD) $(LD_SERVER_ADD)
@@ -1418,13 +1401,13 @@ imap_squatter_LDADD = $(LD_UTILITY_ADD)
 imap_squat_dump_SOURCES = imap/cli_fatal.c imap/mutex_fake.c imap/squat_dump.c
 imap_squat_dump_LDADD = $(LD_UTILITY_ADD)
 
-imap_sync_client_SOURCES = imap/mutex_fake.c imap/sync_client.c imap/sync_support.c imap/sync_support.h
+imap_sync_client_SOURCES = imap/mutex_fake.c imap/sync_client.c imap/sync_support.c
 imap_sync_client_LDADD = $(LD_SIEVE_ADD) $(LD_UTILITY_ADD)
 
-imap_sync_reset_SOURCES = imap/mutex_fake.c imap/sync_reset.c imap/sync_support.c imap/sync_support.h
+imap_sync_reset_SOURCES = imap/mutex_fake.c imap/sync_reset.c imap/sync_support.c
 imap_sync_reset_LDADD = $(LD_SIEVE_ADD) $(LD_UTILITY_ADD)
 
-imap_sync_server_SOURCES = imap/mutex_fake.c imap/sync_server.c imap/sync_support.c imap/sync_support.h master/service.c
+imap_sync_server_SOURCES = imap/mutex_fake.c imap/sync_server.c imap/sync_support.c master/service.c
 imap_sync_server_LDADD = $(LD_SIEVE_ADD) $(LD_SERVER_ADD)
 
 imap_tls_prune_SOURCES = imap/cli_fatal.c imap/mutex_fake.c imap/tls_prune.c
@@ -1839,8 +1822,7 @@ if JMAP
 sieve_libcyrus_sieve_la_SOURCES += \
 	imap/jmap_mail_query_parse.c \
 	imap/jmap_mail_query_parse.h \
-	imap/json_support.c \
-	imap/json_support.h
+	imap/json_support.c
 endif
 
 sieve_libcyrus_sieve_la_LIBADD = \
@@ -1855,8 +1837,7 @@ sieve_sieved_LDADD = $(LD_SIEVE_ADD)
 
 sieve_test_SOURCES = \
     sieve/test.c \
-    imap/mutex_fake.c \
-    sieve/sieve_interface.h
+    imap/mutex_fake.c
 if JMAP
 sieve_test_SOURCES += \
 	imap/jmap_util.c imap/jmap_mail_query.c imap/jmap_mail_query_parse.c
@@ -1865,8 +1846,7 @@ sieve_test_LDADD = $(LD_SIEVE_ADD) $(LD_UTILITY_ADD)
 
 sieve_test_mailbox_SOURCES = \
     sieve/test_mailbox.c \
-    imap/mutex_fake.c \
-    sieve/sieve_interface.h
+    imap/mutex_fake.c
 sieve_test_mailbox_LDADD = $(LD_SIEVE_ADD) $(LD_UTILITY_ADD)
 
 timsieved_timsieved_SOURCES = \
