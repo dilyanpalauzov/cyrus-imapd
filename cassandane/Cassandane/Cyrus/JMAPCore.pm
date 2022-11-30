@@ -696,7 +696,7 @@ sub test_blob_lookup
     my $talk = $store->get_client();
     my $inbox = 'INBOX';
 
-    xlog $self, "Generate a email in $inbox via IMAP";
+    xlog $self, "Generate an email in $inbox via IMAP";
     my %exp_sub;
     $store->set_folder($inbox);
     $store->_select();
@@ -757,7 +757,7 @@ sub test_blob_get
     my $talk = $store->get_client();
     my $inbox = 'INBOX';
 
-    xlog $self, "Generate a email in $inbox via IMAP";
+    xlog $self, "Generate an email in $inbox via IMAP";
     my %exp_sub;
     $store->set_folder($inbox);
     $store->_select();

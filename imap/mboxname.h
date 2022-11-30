@@ -166,7 +166,7 @@ int mboxname_isdeletedmailbox(const char *name, time_t *timestampp);
 int mboxname_iscalendarmailbox(const char *name, int mbtype);
 
 /*
- * If (internal) mailbox 'name' is a ADDRESSBOOK mailbox
+ * If (internal) mailbox 'name' is an ADDRESSBOOK mailbox
  * returns boolean
  */
 int mboxname_isaddressbookmailbox(const char *name, int mbtype);

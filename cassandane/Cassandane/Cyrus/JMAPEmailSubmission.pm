@@ -115,8 +115,8 @@ sub test_emailsubmission_set
     my $identityid = $res->[0][1]->{list}[0]->{id};
     $self->assert_not_null($identityid);
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email") or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -176,8 +176,8 @@ sub test_emailsubmission_set_with_envelope
     my $identityid = $res->[0][1]->{list}[0]->{id};
     $self->assert_not_null($identityid);
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email\r\nwithCRLF\r\n") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email\r\nwithCRLF\r\n") or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -220,8 +220,8 @@ sub test_emailsubmission_set_futurerelease
     my $identityid = $res->[0][1]->{list}[0]->{id};
     $self->assert_not_null($identityid);
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email\r\nwithCRLF\r\n") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email\r\nwithCRLF\r\n") or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -376,8 +376,8 @@ sub test_emailsubmission_set_bad_futurerelease
     my $identityid = $res->[0][1]->{list}[0]->{id};
     $self->assert_not_null($identityid);
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email\r\nwithCRLF\r\n") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email\r\nwithCRLF\r\n") or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -533,8 +533,8 @@ sub test_replication_emailsubmission_set_futurerelease
     my $identityid = $res->[0][1]->{list}[0]->{id};
     $self->assert_not_null($identityid);
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email\r\nwithCRLF\r\n") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email\r\nwithCRLF\r\n") or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -898,8 +898,8 @@ sub test_emailsubmission_set_smtp_rejection
     my $identityid = $res->[0][1]->{list}[0]->{id};
     $self->assert_not_null($identityid);
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email\r\nwith 11 recipients\r\n") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email\r\nwith 11 recipients\r\n") or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -943,8 +943,8 @@ sub test_emailsubmission_set_too_many_recipients
     my $identityid = $res->[0][1]->{list}[0]->{id};
     $self->assert_not_null($identityid);
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email\r\nwith 11 recipients\r\n") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email\r\nwith 11 recipients\r\n") or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -1005,8 +1005,8 @@ sub test_emailsubmission_set_fail_some_recipients
     my $identityid = $res->[0][1]->{list}[0]->{id};
     $self->assert_not_null($identityid);
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email\r\nwith 10 recipients\r\n") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email\r\nwith 10 recipients\r\n") or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -1065,9 +1065,9 @@ sub test_emailsubmission_set_message_too_large
     my $identityid = $res->[0][1]->{list}[0]->{id};
     $self->assert_not_null($identityid);
 
-    xlog $self, "Generate a email via IMAP";
+    xlog $self, "Generate an email via IMAP";
     my $x = "x";
-    $self->make_message("foo", body => "a email\r\nwith 10k+ octet body\r\n" . $x x 10000) or die;
+    $self->make_message("foo", body => "an email\r\nwith 10k+ octet body\r\n" . $x x 10000) or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -1187,8 +1187,8 @@ sub test_emailsubmission_changes
     $self->assert_deep_equals([], $res->[0][1]->{updated});
     $self->assert_deep_equals([], $res->[0][1]->{destroyed});
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email") or die;
 
     xlog $self, "get email id";
     $res = $jmap->CallMethods( [ [ 'Email/query', {}, "R1" ] ] );
@@ -1284,8 +1284,8 @@ sub test_emailsubmission_onsuccess_not_using
     my ($self) = @_;
     my $jmap = $self->{jmap};
 
-    xlog $self, "Generate a email via IMAP";
-    $self->make_message("foo", body => "a email\r\nwithCRLF\r\n") or die;
+    xlog $self, "Generate an email via IMAP";
+    $self->make_message("foo", body => "an email\r\nwithCRLF\r\n") or die;
 
     xlog $self, "get identity id";
     my $res = $jmap->CallMethods( [ [ 'Identity/get', {}, "R1" ] ] );
