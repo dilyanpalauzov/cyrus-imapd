@@ -2285,9 +2285,10 @@ static int sieve_find_script(const char *user, const char *domain,
 
     const char *userid = buf_cstring(&buf);
     char *sievedir = user_sieve_path(userid);
+    char *freeme = NULL;
 
     if (!script) { /* default script */
-        script = sievedir_get_active(sievedir);
+        script = freeme = sievedir_get_active(sievedir);
 
         if (!script) {
             free(sievedir);
@@ -2299,6 +2300,7 @@ static int sieve_find_script(const char *user, const char *domain,
 
     sieve_script_rebuild(userid, sievedir, script);
 
+    free(freeme);
     free(sievedir);
     buf_free(&buf);
 

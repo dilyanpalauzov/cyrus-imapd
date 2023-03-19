@@ -222,7 +222,7 @@ static json_t *vacation_read(jmap_req_t *req,
 #ifdef USE_SIEVE
             /* Check if vacation script is really active */
             char *sieve_dir = user_sieve_path(req->accountid);
-            const char *activebc =  sievedir_get_active(sieve_dir);
+            char *activebc = sievedir_get_active(sieve_dir);
             struct buf *buf = NULL;
 
             if (activebc && (buf = sievedir_get_script(sieve_dir, activebc))) {
@@ -254,6 +254,7 @@ static json_t *vacation_read(jmap_req_t *req,
                 buf_destroy(buf);
             }
             free(sieve_dir);
+            free(activebc);
         }
 #endif /* USE_SIEVE */
 
