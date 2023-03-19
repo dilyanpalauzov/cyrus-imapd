@@ -920,7 +920,7 @@ EXPORTED int sieve_ensure_folder(const char *userid, struct mailbox **mailboxptr
 
         /* Migrate scripts from sievedir into mailbox */
         struct migrate_rock mrock =
-            { mailbox, xstrdupnull(sievedir_get_active(sievedir)) };
+            { mailbox, sievedir_get_active(sievedir) };
 
         sievedir_foreach(sievedir, SIEVEDIR_SCRIPTS_ONLY, &migrate_cb, &mrock);
 
