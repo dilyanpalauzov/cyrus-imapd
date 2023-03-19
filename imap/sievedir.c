@@ -185,9 +185,9 @@ EXPORTED int sievedir_valid_name(const struct buf *name)
     return (lup < SIEVEDIR_MAX_NAME_LEN);
 }
 
-EXPORTED const char *sievedir_get_active(const char *sievedir)
+EXPORTED char *sievedir_get_active(const char *sievedir)
 {
-    static char target[PATH_MAX];
+    char target[PATH_MAX];
     char link[PATH_MAX];
     ssize_t tgt_len;
 
@@ -199,9 +199,9 @@ EXPORTED const char *sievedir_get_active(const char *sievedir)
 
     if (tgt_len > BYTECODE_SUFFIX_LEN) {
         target[tgt_len - BYTECODE_SUFFIX_LEN] = '\0';
-        return target;
+        return xstrdup(target);
     }
-    else if (tgt_len == -1 && errno != ENOENT) {
+    if (tgt_len == -1 && errno != ENOENT) {
         xsyslog(LOG_ERR, "IOERROR: failed to read active script link",
                 "link=<%s>", link);
     }
@@ -212,8 +212,11 @@ EXPORTED const char *sievedir_get_active(const char *sievedir)
 EXPORTED int sievedir_script_isactive(const char *sievedir, const char *name)
 {
     if (!name) return 0;
+    char *activebc = sievedir_get_active(sievedir);
+    int ret = strcmpnull(name, activebc) == 0;
+    free(activebc);
 
-    return (strcmpnull(name, sievedir_get_active(sievedir)) == 0);
+    return ret;
 }
 
 EXPORTED int sievedir_activate_script(const char *sievedir, const char *name)
