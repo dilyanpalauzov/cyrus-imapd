@@ -666,7 +666,7 @@ EXPORTED int dump_mailbox(const char *tag, struct mailbox *mailbox, uint32_t uid
          * xxx can't use home directories currently
          * (it makes almost no sense in the conext of a murder) */
         if (!sieve_usehomedir) {
-            const char *sieve_path = user_sieve_path(userid);
+            char *sieve_path = user_sieve_path(userid);
             mbdir = opendir(sieve_path);
 
             if (!mbdir) {
@@ -699,15 +699,18 @@ EXPORTED int dump_mailbox(const char *tag, struct mailbox *mailbox, uint32_t uid
 
                         /* dump file */
                         r = dump_file(0, !tag, pin, pout, filename, tag_fname, NULL, 0);
-                        if (r) goto done;
+                        if (r) {
+                            free(sieve_path);
+                            goto done;
+                        }
                     }
                 }
 
                 closedir(mbdir);
                 mbdir = NULL;
             }
+            free(sieve_path);
         } /* end if !sieve_userhomedir */
-
     } /* end if user INBOX */
 
     /* Dump quota data */
@@ -840,7 +843,7 @@ EXPORTED int undump_mailbox(const char *mbname,
     int r = 0;
     int curfile = -1;
     struct mailbox *mailbox = NULL;
-    const char *sieve_path = NULL;
+    char *sieve_path = NULL;
     int sieve_usehomedir = config_getswitch(IMAPOPT_SIEVEUSEHOMEDIR);
     char *userid = NULL;
     int first_annotation = 1;
@@ -873,6 +876,7 @@ EXPORTED int undump_mailbox(const char *mbname,
         buf_free(&data);
         free(userid);
         eatline(pin, c);
+        free(sieve_path);
         return IMAP_PROTOCOL_BAD_PARAMETERS;
     }
 
@@ -889,6 +893,7 @@ EXPORTED int undump_mailbox(const char *mbname,
         buf_free(&data);
         free(userid);
         eatline(pin, c);
+        free(sieve_path);
         return IMAP_PROTOCOL_BAD_PARAMETERS;
     }
 
@@ -896,6 +901,7 @@ EXPORTED int undump_mailbox(const char *mbname,
         buf_free(&data);
         free(userid);
         eatline(pin, c);
+        free(sieve_path);
         return IMAP_PROTOCOL_BAD_PARAMETERS;
     } else if(c == ')') {
         goto done;
@@ -1332,6 +1338,7 @@ EXPORTED int undump_mailbox(const char *mbname,
     free(seen_file);
     free(mboxkey_file);
     free(userid);
+    free(sieve_path);
 
     return r;
 }

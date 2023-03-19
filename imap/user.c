@@ -135,12 +135,12 @@ static int user_deleteacl(char *name, int matchlen, int category, void* rock)
 }
 #endif
 
-static const char *user_sieve_path_byname(const mbname_t *mbname)
+static char *user_sieve_path_byname(const mbname_t *mbname)
 {
-    static char sieve_path[2048];
+    char *sieve_path = malloc(2048);
     const char *localpart = mbname_localpart(mbname);
     const char *domain = mbname_domain(mbname);
-    size_t len, size = sizeof(sieve_path);
+    size_t len, size = 2048;
 
     len = strlcpy(sieve_path, config_getstring(IMAPOPT_SIEVEDIR), size);
 
@@ -162,20 +162,20 @@ static const char *user_sieve_path_byname(const mbname_t *mbname)
     return sieve_path;
 }
 
-static const char *user_sieve_path_byid(const char *mboxid)
+static char *user_sieve_path_byid(const char *mboxid)
 {
-    static char sieve_path[2048];
+    char *sieve_path = malloc(2048);
 
-    mboxname_id_hash(sieve_path, sizeof(sieve_path),
+    mboxname_id_hash(sieve_path, 2048,
                      config_getstring(IMAPOPT_SIEVEDIR),
                      mboxid);
 
     return sieve_path;
 }
 
-EXPORTED const char *user_sieve_path(const char *inuser)
+EXPORTED char *user_sieve_path(const char *inuser)
 {
-    const char *sieve_path;
+    char *sieve_path;
     char *user = xstrdupnull(inuser);
     char *p;
 
@@ -268,7 +268,8 @@ EXPORTED int user_deletedata(const mbentry_t *mbentry, int wipe_user)
     mbname_t *mbname = mbname_from_intname(mbentry->name);
     const char *userid = mbname_userid(mbname);
     strarray_t paths = STRARRAY_INITIALIZER;
-    const char *sieve_path = NULL, **suffixes;
+    char *sieve_path = NULL;
+    const char **suffixes;
     int i;
 
     assert(user_isnamespacelocked(userid));
@@ -317,6 +318,7 @@ EXPORTED int user_deletedata(const mbentry_t *mbentry, int wipe_user)
     if (sieve_path) {
         /* delete sieve scripts */
         user_deletesieve(sieve_path);
+        free(sieve_path);
     }
 
     /* delete quotas */

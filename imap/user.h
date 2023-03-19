@@ -51,7 +51,7 @@
 #define FNAME_COUNTERSSUFFIX "counters"
 
 /* path to user's sieve directory */
-const char *user_sieve_path(const char *user);
+char *user_sieve_path(const char *user);
 
 /* Delete meta-data (seen state, subscriptions, ACLs, quotaroots,
  * sieve scripts) for 'user'.
