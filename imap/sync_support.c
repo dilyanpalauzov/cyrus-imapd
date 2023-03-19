@@ -2790,7 +2790,7 @@ int sync_apply_mailbox(struct dlist *kin,
             /* Create sievedir for this user */
             mbname_t *mbname = mbname_from_intname(mboxname);
             const char *userid = mbname_userid(mbname);
-            const char *sieve_path = user_sieve_path(userid);
+            char *sieve_path = user_sieve_path(userid);
             struct stat sbuf;
 
             mbname_free(&mbname);
@@ -2807,6 +2807,7 @@ int sync_apply_mailbox(struct dlist *kin,
                     r = IMAP_IOERROR;
                 }
             }
+            free(sieve_path);
         }
 #endif
     }
@@ -3403,7 +3404,6 @@ int sync_sieve_upload(const char *userid, const char *fname,
                       const char *content,
                       size_t len)
 {
-    const char *sieve_path = user_sieve_path(userid);
     char name[2048];
     char *ext;
     int r = 0;
@@ -3419,14 +3419,19 @@ int sync_sieve_upload(const char *userid, const char *fname,
         return 0;
     }
 
+    char *sieve_path = user_sieve_path(userid);
     if (stat(sieve_path, &sbuf) == -1 && errno == ENOENT) {
-        if (cyrus_mkdir(sieve_path, 0755) == -1) return IMAP_IOERROR;
+        if (cyrus_mkdir(sieve_path, 0755) == -1) {
+            free(sieve_path);
+            return IMAP_IOERROR;
+        }
         if (mkdir(sieve_path, 0755) == -1 && errno != EEXIST) {
             syslog(LOG_ERR, "Failed to create %s:%m", sieve_path);
+            free(sieve_path);
             return IMAP_IOERROR;
         }
     }
-
+    free(sieve_path);
     db = sievedb_open_userid(userid);
     if (!db) {
         syslog(LOG_ERR, "Failed to open Sieve DB for %s", userid);
@@ -3611,7 +3616,6 @@ int sync_get_user(struct dlist *kin, struct sync_state *sstate)
 
 #ifdef USE_SIEVE
     /* Remove any cruft from sievedir */
-    const char *sieve_path = user_sieve_path(userid);
     struct sieve_db *db = sievedb_open_userid(userid);
     strarray_t list = STRARRAY_INITIALIZER;
 
@@ -3621,7 +3625,9 @@ int sync_get_user(struct dlist *kin, struct sync_state *sstate)
         sievedb_close(db);
     }
 
+    char *sieve_path = user_sieve_path(userid);
     sievedir_foreach(sieve_path, 0/*flags*/, &remove_cb, &list);
+    free(sieve_path);
     strarray_fini(&list);
 #endif
 

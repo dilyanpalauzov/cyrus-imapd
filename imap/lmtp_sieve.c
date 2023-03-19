@@ -2321,7 +2321,7 @@ static int sieve_find_script(const char *user, const char *domain,
     if (domain) buf_printf(&buf, "@%s", domain);
 
     const char *userid = buf_cstring(&buf);
-    const char *sievedir = user_sieve_path(userid);
+    char *sievedir = user_sieve_path(userid);
     int r = -1;
 
     if (!script) { /* default script */
@@ -2333,6 +2333,7 @@ static int sieve_find_script(const char *user, const char *domain,
         sieve_script_rebuild(userid, sievedir, script);
         r = 0;
     }
+    free(sievedir);
     buf_free(&buf);
 
     return r;

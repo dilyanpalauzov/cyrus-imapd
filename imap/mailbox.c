@@ -3994,7 +3994,7 @@ static struct sieve_db *mailbox_open_sieve(struct mailbox *mailbox)
 {
     if (!mailbox->sievedir) {
         char *userid = mboxname_to_userid(mailbox_name(mailbox));
-        mailbox->sievedir = xstrdup(user_sieve_path(userid));
+        mailbox->sievedir = user_sieve_path(userid);
         free(userid);
     }
     if (!mailbox->local_sieve) {

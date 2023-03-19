@@ -1987,7 +1987,6 @@ static int jmap_sieve_test(struct jmap_req *req)
     }
 
     if (scriptid[0] == 'S') {
-        const char *sievedir = user_sieve_path(req->accountid);
         struct sieve_data *sdata = NULL;
 
         struct sieve_db *db = sievedb_open_userid(req->accountid);
@@ -2002,7 +2001,9 @@ static int jmap_sieve_test(struct jmap_req *req)
         }
         else {
             /* Use pre-compiled bytecode file */
+            char *sievedir = user_sieve_path(req->accountid);
             buf_printf(&buf, "%s/%s%s", sievedir, sdata->name, BYTECODE_SUFFIX);
+            free(sievedir);
             bcname = buf_cstring(&buf);
         }
 
