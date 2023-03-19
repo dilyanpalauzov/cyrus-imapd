@@ -209,7 +209,6 @@ int main(int argc, char **argv)
             const char *partition = mbentry->partition;
             const char *uniqueid = mbentry->uniqueid;
             const char *name = mbentry->name;
-            const char *path = NULL;
             char *userid = NULL;
             char *extname = NULL;
             strarray_t *oldpaths = strarray_new();
@@ -245,7 +244,7 @@ int main(int argc, char **argv)
 
             /* Add data & archive paths */
             for (j = 0; datapath[j]; j++) {
-                path = datapath[j](partition, name, NULL, 0);
+                const char *path = datapath[j](partition, name, NULL, 0);
                 if (!path || strarray_find(oldpaths, path, 0) >= 0) continue;
 
                 strarray_append(oldpaths, path);
@@ -255,7 +254,7 @@ int main(int argc, char **argv)
 
             /* Add metadata paths */
             for (metafile = 0; metafile <= META_ARCHIVECACHE; metafile++) {
-                path = mboxname_metapath(partition, name, NULL, metafile, 0);
+                const char *path = mboxname_metapath(partition, name, NULL, metafile, 0);
                 if (!path || strarray_find(oldpaths, path, 0) >= 0) continue;
 
                 strarray_append(oldpaths, path);
@@ -297,14 +296,15 @@ int main(int argc, char **argv)
                 }
 
                 /* Add sieve path */
-                path = user_sieve_path(userid);
-                if (*path) {
-                    strarray_append(oldpaths, path);
+                char *sieve_path = user_sieve_path(userid);
+                if (*sieve_path) {
+                    strarray_appendm(oldpaths, sieve_path);
 
                     buf_setcstr(&buf, config_getstring(IMAPOPT_SIEVEDIR));
                     buf_printf(&buf, "/%s", userpath);
                     strarray_append(newpaths, buf_cstring(&buf));
                 }
+                else free(sieve_path);
 
                 if (config_search_engine == IMAP_ENUM_SEARCH_ENGINE_XAPIAN) {
                     /* Add xapian tier paths */

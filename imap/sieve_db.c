@@ -863,13 +863,14 @@ static int migrate_cb(const char *sievedir,
 
 EXPORTED int sieve_ensure_folder(const char *userid, struct mailbox **mailboxptr)
 {
-    const char *sievedir = user_sieve_path(userid);
+    char *sievedir = user_sieve_path(userid);
     struct stat sbuf;
     int r;
 
     r = stat(sievedir, &sbuf);
     if (r && errno == ENOENT) {
         if (!mailboxptr) {
+            free(sievedir);
             /* Don't bother continuing if sievedir doesn't currently exist */
             return 0;
         }
@@ -879,7 +880,10 @@ EXPORTED int sieve_ensure_folder(const char *userid, struct mailbox **mailboxptr
             r = mkdir(sievedir, 0755);
         }
     }
-    if (r) return IMAP_IOERROR;
+    if (r) {
+        free(sievedir);
+        return IMAP_IOERROR;
+    }
 
 
     struct mboxlock *namespacelock = NULL;
@@ -940,6 +944,7 @@ EXPORTED int sieve_ensure_folder(const char *userid, struct mailbox **mailboxptr
   done:
     mboxname_release(&namespacelock);
     free(mboxname);
+    free(sievedir);
     return r;
 }
 
