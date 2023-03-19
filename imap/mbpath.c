@@ -171,7 +171,9 @@ static void print_json(const mbname_t *mbname, const mbentry_t *mbentry)
         json_object_set_new(juser, "dav", json_string(val));
         free(val);
 
-        json_object_set_new(juser, "sieve", json_string(user_sieve_path(userid)));
+        char *sieve_dir = user_sieve_path(userid);
+        json_object_set_new(juser, "sieve", json_string(sieve_dir));
+        free(sieve_dir);
 
         val = user_hash_meta(userid, "seen");
         json_object_set_new(juser, "seen", json_string(val));
@@ -290,9 +292,10 @@ static int do_paths(struct findall_data *data, void *rock)
             printf("%s\n", path);
         }
         if (opts->paths & DO_SIEVE) {
-            const char *path = user_sieve_path(mbname_userid(data->mbname));
+            char *path = user_sieve_path(mbname_userid(data->mbname));
             if (opts->paths == DO_ALL) printf("Sieve: ");
             printf("%s\n", path);
+            free(path);
         }
         if (opts->paths & DO_USER) {
             // different interface - caller must free

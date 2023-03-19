@@ -204,7 +204,6 @@ static int autocreate_sieve(const char *userid, const char *source_script)
     int do_compile = 0;
     const char *compiled_source_script = NULL;
     const char *sievename = get_script_name(source_script);
-    const char *sieve_script_dir = NULL;
     struct sieve_scripts script_names;
     char buf[4096];
     mode_t oldmask;
@@ -233,7 +232,7 @@ static int autocreate_sieve(const char *userid, const char *source_script)
         do_compile = 1;
     }
 
-    sieve_script_dir = user_sieve_path(userid);
+    char *sieve_script_dir = user_sieve_path(userid);
     if (!sieve_script_dir) {
         syslog(LOG_ERR, "autocreate_sieve: unable to determine sieve directory"
                "for user %s", userid);
@@ -243,8 +242,10 @@ static int autocreate_sieve(const char *userid, const char *source_script)
     if (setup_sieve_filenames(sieve_script_dir, sievename, &script_names) != 0) {
         syslog(LOG_ERR, "autocreate_sieve: Invalid sieve path %s, %s, %s",
                sieve_script_dir, sievename, userid);
+        free(sieve_script_dir);
         goto failed_start;
     }
+    free(sieve_script_dir);
 
     /* Check if a default sieve filter already exists */
     if (!stat(script_names.defaultname, &statbuf)) {

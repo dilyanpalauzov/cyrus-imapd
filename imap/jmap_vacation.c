@@ -198,7 +198,6 @@ static const jmap_property_t vacation_props[] = {
 static json_t *vacation_read(jmap_req_t *req, struct mailbox *mailbox,
                              struct sieve_data *sdata, unsigned *status)
 {
-    const char *sieve_dir = user_sieve_path(req->accountid);
     struct buf content = BUF_INITIALIZER;
     json_t *vacation = NULL;
 
@@ -225,6 +224,7 @@ static json_t *vacation_read(jmap_req_t *req, struct mailbox *mailbox,
         if (isEnabled && !isActive) {
 #ifdef USE_SIEVE
             /* Check if vacation script is really active */
+            char *sieve_dir = user_sieve_path(req->accountid);
             const char *activebc =  sievedir_get_active(sieve_dir);
             struct buf *buf = NULL;
 
@@ -256,6 +256,7 @@ static json_t *vacation_read(jmap_req_t *req, struct mailbox *mailbox,
 
                 buf_destroy(buf);
             }
+            free(sieve_dir);
         }
 #endif /* USE_SIEVE */
 

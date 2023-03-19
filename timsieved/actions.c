@@ -108,12 +108,13 @@ int actions_init(void)
 
 int actions_setuser(const char *userid)
 {
-    struct buf buf = BUF_INITIALIZER;
     int result;
 
     sieved_userid = xstrdup(userid);
+    free(sieve_dir);
 
     if (sieved_userisadmin) {
+        struct buf buf = BUF_INITIALIZER;
         char *domain = NULL;
 
         buf_setcstr(&buf, sieve_dir_config);
@@ -124,13 +125,9 @@ int actions_setuser(const char *userid)
         }
 
         buf_appendcstr(&buf, "/global");
-    }
-    else {
-        buf_setcstr(&buf, user_sieve_path(userid));
-    }
-
-    if (sieve_dir) free(sieve_dir);
-    sieve_dir = buf_release(&buf);
+        sieve_dir = buf_release(&buf);
+    } else
+        sieve_dir = user_sieve_path(userid);
 
     struct stat sbuf;
     result = stat(sieve_dir, &sbuf);
