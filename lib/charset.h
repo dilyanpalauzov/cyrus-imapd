@@ -65,7 +65,7 @@
 /* RFC 5322, 2.1.1 */
 #define MIME_MAX_HEADER_LENGTH 78
 
-#include "util.h"
+#include "buf.h"
 #include "xsha1.h"
 
 #define charset_base64_len_unpadded(n) \
