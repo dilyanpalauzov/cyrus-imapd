@@ -62,7 +62,7 @@
 
 #define CHARSET_UNKNOWN_CHARSET (NULL)
 
-#include "util.h"
+#include "buf.h"
 #include "xsha1.h"
 
 typedef int comp_pat;
